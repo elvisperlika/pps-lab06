@@ -76,7 +76,15 @@ enum List[A]:
       case _ => (acc, rest)
     _span(Nil(), this)
 
-  def takeRight(n: Int): List[A] = ???
+  def takeRight(n: Int): List[A] = {
+    foldLeft(Nil[A](), Nil[A]()) {
+          case ((l1, l2), h) =>
+            if l1.length < this.length - n then
+              (l1.append(h :: Nil()), l2)
+            else (l1, l2.append(h :: Nil()))
+    }._2
+  }
+
   def collect(predicate: PartialFunction[A, A]): List[A] = ???
 // Factories
 object List:
@@ -94,14 +102,14 @@ object Test extends App:
   import List.*
   val emptyList = Nil()
   val reference = List(1, 2, 3, 4)
-//  println(reference.zipWithValue(10)) // List((1, 10), (2, 10), (3, 10), (4, 10))
-//  println(reference.length) // 4
-//  println(emptyList.length) // 0
-//  println(reference.zipWithIndex) // List((1, 0), (2, 1), (3, 2), (4, 3))
-//  println(reference.partition(_ % 2 == 0)) // (List(2, 4), List(1, 3))
+  println(reference.zipWithValue(10)) // List((1, 10), (2, 10), (3, 10), (4, 10))
+  println(reference.length) // 4
+  println(emptyList.length) // 0
+  println(reference.zipWithIndex) // List((1, 0), (2, 1), (3, 2), (4, 3))
+  println(reference.partition(_ % 2 == 0)) // (List(2, 4), List(1, 3))
   println(reference.span(_ % 2 != 0)) // (List(1), List(2, 3, 4))
-//  println(reference.span(_ < 3)) // (List(1, 2), List(3, 4))
-//  println(reference.reduce(_ + _)) // 10
-//  println(List(10).reduce(_ + _)) // 10
-//  println(reference.takeRight(3)) // List(2, 3, 4)
-//  println(reference.collect { case x if x % 2 == 0 => x + 1 }) // List(3, 5)
+  println(reference.span(_ < 3)) // (List(1, 2), List(3, 4))
+  println(reference.reduce(_ + _)) // 10
+  println(List(10).reduce(_ + _)) // 10
+  println(reference.takeRight(3)) // List(2, 3, 4)
+  println(reference.collect { case x if x % 2 == 0 => x + 1 }) // List(3, 5)
