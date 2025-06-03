@@ -85,7 +85,9 @@ enum List[A]:
     }._2
   }
 
-  def collect(predicate: PartialFunction[A, A]): List[A] = ???
+  def collect(predicate: PartialFunction[A, A]): List[A] =
+    foldRight(Nil())((h, acc) => if predicate.isDefinedAt(h) then predicate(h) :: acc else acc)
+
 // Factories
 object List:
 
